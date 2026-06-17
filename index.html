@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeekPlace | Nerdcore BR</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060608;
+  --s1: #0e0e14;
+  --s2: #14141d;
+  --s3: #1c1c28;
+  --border: #22223a;
+  --accent: #8b5cf6;
+  --accent2: #6d28d9;
+  --glow: rgba(139,92,246,0.3);
+  --muted: #4a4a6a;
+  --text: #ddddf0;
+  --white: #ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+.layout{display:flex;height:100%;width:100%;overflow:hidden}
+
+/* SIDEBAR */
+#sidebar{width:230px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.logo{padding:26px 22px 18px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.logo-svg{width:26px;height:26px;color:var(--accent)}
+.logo-text{font-family:'Anton',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#fff;text-transform:uppercase}
+.logo-text span{color:var(--accent)}
+.nav-section{font-size:.6rem;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding:0 18px 6px;margin-top:18px}
+.nav-btn{display:flex;align-items:center;gap:12px;padding:10px 18px;margin:2px 6px;border-radius:8px;cursor:pointer;border:none;background:none;color:var(--muted);font-weight:600;font-size:.875rem;text-align:left;width:calc(100% - 12px);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.nav-btn svg{width:17px;height:17px;flex-shrink:0}
+.nav-btn:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nav-btn.active{color:var(--accent);background:rgba(139,92,246,.12)}
+.sidebar-now{margin-top:auto;border-top:1px solid var(--border);padding:16px}
+.sidebar-now-label{font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sidebar-now-track{display:flex;align-items:center;gap:10px;cursor:pointer}
+.sidebar-now-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--border);flex-shrink:0}
+.sidebar-now-info{min-width:0}
+.sidebar-now-title{font-size:.8rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-now-artist{font-size:.7rem;color:var(--muted);font-weight:500}
+
+/* MAIN */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;height:calc(100% - 80px)}
+#topbar{height:62px;flex-shrink:0;padding:0 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;background:rgba(6,6,8,.85);backdrop-filter:blur(12px)}
+#search-wrap{flex:1;max-width:380px;position:relative}
+#search-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted)}
+#search-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:999px;padding:9px 14px 9px 38px;color:var(--text);outline:none;transition:border-color .2s;font-family:'Space Grotesk',sans-serif;font-size:.875rem}
+#search-input:focus{border-color:var(--accent)}
+#search-input::placeholder{color:var(--muted)}
+
+/* TAB PILLS */
+.tab-pills{display:flex;gap:6px}
+.tab-pill{padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.tab-pill:hover{color:#fff;border-color:var(--muted)}
+.tab-pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+#content{flex:1;overflow-y:auto;padding:32px 28px}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-bar{width:3px;height:32px;background:var(--accent);border-radius:2px;box-shadow:0 0 12px var(--glow)}
+.sec-title{font-family:'Anton',sans-serif;font-size:1.7rem;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.sec-count{font-size:.72rem;font-weight:700;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:99px;padding:2px 9px}
+
+/* ARTIST CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:var(--s3);box-shadow:0 10px 36px rgba(0,0,0,.5)}
+.card-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;margin-bottom:12px;background:var(--s3)}
+.card-name{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.card-sub{font-size:.7rem;color:var(--muted);font-weight:500}
+.card-overlay{position:absolute;inset:0;background:rgba(139,92,246,.18);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:12px}
+.card:hover .card-overlay{opacity:1}
+.play-circle{width:44px;height:44px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--glow)}
+
+/* TRACK LIST */
+.track-list{display:flex;flex-direction:column;gap:2px}
+.track-item{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .12s;border:1px solid transparent}
+.track-item:hover{background:var(--s2)}
+.track-item.active{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2)}
+.track-num{width:22px;text-align:center;font-size:.75rem;font-weight:700;color:var(--muted);flex-shrink:0}
+.track-thumb{width:44px;height:36px;border-radius:5px;object-fit:cover;background:var(--border);flex-shrink:0}
+.track-title{font-size:.85rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-sub{font-size:.7rem;color:var(--muted);font-weight:500;margin-top:2px}
+.track-dur{font-size:.7rem;font-weight:700;color:var(--muted);flex-shrink:0;tabular-nums}
+.track-eq{width:22px;height:22px;flex-shrink:0;display:none}
+.track-item.active .track-num{display:none}
+.track-item.active .track-eq{display:flex;align-items:flex-end;gap:2px}
+.eq-bar{width:3px;background:var(--accent);border-radius:1px;animation:eq .5s ease-in-out infinite alternate}
+.eq-bar:nth-child(2){animation-delay:.15s;height:10px}
+.eq-bar:nth-child(3){animation-delay:.3s;height:6px}
+@keyframes eq{from{height:4px}to{height:14px}}
+
+/* PLAYER BAR */
+#player-bar{height:80px;position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,16,.95);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:16px;z-index:40;backdrop-filter:blur(20px)}
+#player-bar.idle{opacity:.35;pointer-events:none}
+.p-info{display:flex;align-items:center;gap:12px;width:260px;flex-shrink:0;cursor:pointer}
+#p-thumb{width:48px;height:38px;border-radius:6px;object-fit:cover;background:var(--border)}
+.p-title{font-weight:700;font-size:.82rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-artist{font-size:.7rem;color:var(--muted);font-weight:500}
+.p-expand-hint{font-size:.65rem;color:var(--accent);font-weight:700;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);border-radius:4px;padding:2px 6px;white-space:nowrap;flex-shrink:0}
+
+.prog-wrap{flex:1;height:3px;background:var(--border);border-radius:99px;cursor:pointer;position:relative}
+.prog-wrap:hover{height:5px;transition:height .1s}
+.prog-fill{height:100%;background:var(--accent);border-radius:99px;width:0%;transition:width .4s linear}
+.prog-wrap:hover .prog-fill{background:var(--white)}
+
+/* CONTROLS */
+.ctrl-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ctrl-btns{display:flex;align-items:center;gap:16px}
+.btn-ctrl{background:none;border:none;cursor:pointer;color:var(--muted);transition:color .15s;display:flex;align-items:center;justify-content:center}
+.btn-ctrl:hover{color:#fff}
+.btn-ctrl svg{width:18px;height:18px}
+.btn-play{width:36px;height:36px;background:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .12s;flex-shrink:0}
+.btn-play:hover{transform:scale(1.08)}
+.btn-play svg{width:16px;height:16px;fill:#000;color:#000}
+.time-row{width:100%;max-width:500px;display:flex;align-items:center;gap:10px}
+.time-label{font-size:.67rem;font-weight:700;color:var(--muted);tabular-nums;white-space:nowrap}
+
+.vol-group{width:180px;display:flex;justify-content:flex-end;align-items:center;gap:8px}
+.vol-group svg{width:16px;height:16px}
+input[type=range]{accent-color:var(--accent);height:3px;cursor:pointer}
+.btn-video{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);color:var(--accent);font-size:.65rem;font-weight:700;padding:4px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.btn-video:hover{background:rgba(139,92,246,.25)}
+
+/* EXPANDED PLAYER */
+#expanded{position:fixed;inset:0;background:#07070c;z-index:60;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+#expanded.open{transform:translateY(0)}
+.exp-topbar{height:58px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05)}
+.btn-back{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .15s;font-family:'Space Grotesk',sans-serif}
+.btn-back:hover{color:#fff}
+.btn-back svg{width:16px;height:16px}
+.exp-badge{font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.exp-body{flex:1;display:grid;grid-template-columns:1fr 1fr;max-width:1100px;width:100%;margin:0 auto;padding:32px 28px;gap:48px;overflow:hidden}
+
+.exp-left{display:flex;flex-direction:column;align-items:center;gap:24px}
+#exp-thumb{width:100%;max-width:320px;aspect-ratio:1;object-fit:cover;border-radius:18px;box-shadow:0 30px 80px rgba(139,92,246,.3);border:1px solid rgba(139,92,246,.15)}
+.exp-info{text-align:center;width:100%}
+#exp-title{font-family:'Anton',sans-serif;font-size:1.6rem;letter-spacing:.5px;text-transform:uppercase;color:#fff;line-clamp:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#exp-artist{color:var(--accent);font-weight:600;font-size:.95rem;margin-top:4px}
+.exp-prog{width:100%;display:flex;align-items:center;gap:10px}
+.exp-prog .prog-wrap{height:4px}
+.exp-prog .prog-wrap:hover{height:6px}
+.exp-ctrl{display:flex;align-items:center;justify-content:center;gap:20px}
+.exp-btn-play{width:56px;height:56px;background:#fff;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .12s}
+.exp-btn-play:hover{transform:scale(1.06)}
+.exp-btn-play svg{width:22px;height:22px;fill:#000;color:#000}
+.exp-btn-ctrl{background:none;border:none;cursor:pointer;color:var(--muted);transition:color .15s;display:flex}
+.exp-btn-ctrl:hover{color:#fff}
+.exp-btn-ctrl svg{width:22px;height:22px}
+
+/* VIDEO MODAL INSIDE EXPANDED */
+.exp-video-row{display:flex;align-items:center;gap:10px;width:100%}
+.btn-toggle-video{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--s2);color:var(--muted);font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:6px}
+.btn-toggle-video:hover{border-color:var(--accent);color:var(--accent)}
+.btn-toggle-video.active{background:rgba(139,92,246,.15);border-color:var(--accent);color:var(--accent)}
+.btn-toggle-video svg{width:13px;height:13px}
+#exp-video-wrap{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:none;background:#000}
+#exp-video-wrap.show{display:block}
+#exp-video-wrap iframe{width:100%;height:100%;border:none}
+
+/* LYRICS */
+.exp-right{display:flex;flex-direction:column;overflow:hidden}
+.lyrics-header{display:flex;align-items:center;gap:8px;font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.lyrics-header svg{width:14px;height:14px}
+#lyric-box{flex:1;overflow-y:auto;padding-right:8px;display:flex;flex-direction:column;gap:0}
+.lyric-para{margin-bottom:20px}
+.lyric-line{font-size:1.3rem;font-weight:700;line-height:1.75;color:rgba(255,255,255,.2);cursor:default;padding:1px 0;transition:all .15s;border-radius:4px}
+.lyric-line:hover{color:#fff;text-shadow:0 0 20px rgba(139,92,246,.6)}
+.lyric-line.hl{color:#fff;text-shadow:0 0 18px rgba(139,92,246,.5)}
+
+/* ARTIST DETAIL HEADER */
+.art-header{display:flex;align-items:flex-end;gap:20px;padding:24px;background:linear-gradient(to bottom,rgba(139,92,246,.08),transparent);border:1px solid var(--border);border-radius:16px;margin-bottom:24px}
+.art-header img{width:90px;height:90px;border-radius:10px;object-fit:cover;border:1px solid rgba(139,92,246,.3);box-shadow:0 8px 30px rgba(139,92,246,.2)}
+.art-header-info{}
+.art-header-badge{font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.art-header-name{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.art-header-meta{font-size:.75rem;color:var(--muted);font-weight:500;margin-top:4px}
+
+/* HIDDEN IFRAME */
+#yt-audio-wrap{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none}
+
+.fade-in{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.empty-state{padding:48px;text-align:center;border:2px dashed var(--border);border-radius:16px;color:var(--muted);font-weight:600;font-size:.875rem}
+
+@media(max-width:768px){
+  #sidebar{width:64px}
+  .nav-btn span,.logo-text,.nav-section,.sidebar-now-info,.sidebar-now-label{display:none}
+  .nav-btn{justify-content:center}
+  .p-info{width:120px}
+  .p-expand-hint,.vol-group,.btn-video{display:none}
+  .exp-body{grid-template-columns:1fr;overflow-y:auto;padding:20px 16px;gap:28px}
+  .exp-right{min-height:250px}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="logo" onclick="goHome()">
+      <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      <span class="logo-text"><span>Geek</span>Place</span>
+    </div>
+    <div class="nav-section">Menu</div>
+    <button class="nav-btn active" data-s="artistas" onclick="navTo('artistas',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+      <span>Artistas</span>
+    </button>
+    <button class="nav-btn" data-s="top" onclick="navTo('top',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <span>Top Hits</span>
+    </button>
+    <button class="nav-btn" data-s="recentes" onclick="navTo('recentes',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Recentes</span>
+    </button>
+
+    <div class="sidebar-now" id="sidebar-now" style="display:none">
+      <div class="sidebar-now-label">Tocando</div>
+      <div class="sidebar-now-track" onclick="openExpanded()">
+        <img class="sidebar-now-thumb" id="sb-thumb" src="" alt="">
+        <div class="sidebar-now-info">
+          <div class="sidebar-now-title" id="sb-title"></div>
+          <div class="sidebar-now-artist" id="sb-artist"></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="topbar">
+      <div id="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-input" type="text" placeholder="Buscar músicas ou artistas..." oninput="handleSearch(this.value)">
+      </div>
+      <div class="tab-pills">
+        <button class="tab-pill active" onclick="navTo('artistas',null,this)">Artistas</button>
+        <button class="tab-pill" onclick="navTo('top',null,this)">Top</button>
+        <button class="tab-pill" onclick="navTo('recentes',null,this)">Recentes</button>
+      </div>
+    </div>
+    <div id="content"></div>
+  </div>
+</div>
+
+<!-- PLAYER BAR -->
+<div id="player-bar" class="idle">
+  <div class="p-info" onclick="openExpanded()">
+    <img id="p-thumb" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+    <div style="min-width:0;flex:1">
+      <div class="p-title" id="p-title">Nenhuma faixa</div>
+      <div class="p-artist" id="p-artist">—</div>
+    </div>
+    <span class="p-expand-hint">▲ Expandir</span>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-btns">
+      <button class="btn-ctrl" onclick="prevTrack()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+      </button>
+      <button class="btn-play" onclick="togglePlay()">
+        <svg id="p-play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="btn-ctrl" onclick="nextTrack()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zM19 4h2v16h-2z"/></svg>
+      </button>
+    </div>
+    <div class="time-row">
+      <span class="time-label" id="p-cur">0:00</span>
+      <div class="prog-wrap" onclick="seekBar(event,this)">
+        <div class="prog-fill" id="p-fill"></div>
+      </div>
+      <span class="time-label" id="p-dur">0:00</span>
+    </div>
+  </div>
+
+  <div class="vol-group">
+    <button class="btn-ctrl" onclick="toggleMute()" style="color:var(--muted)">
+      <svg id="p-vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+    </button>
+    <input type="range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:70px">
+    <button class="btn-video" onclick="toggleVideoBar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:3px"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M17 2l5 5-5 5"/><path d="M22 7H7"/></svg>
+      Ver Vídeo
+    </button>
+  </div>
+</div>
+
+<!-- EXPANDED PLAYER (MODO IMERSIVO) -->
+<div id="expanded">
+  <div class="exp-topbar">
+    <button class="btn-back" onclick="closeExpanded()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      Voltar
+    </button>
+    <span class="exp-badge">◈ GeekPlace · Modo Imersivo</span>
+    <div style="width:70px"></div>
+  </div>
+
+  <div class="exp-body">
+    <!-- LEFT -->
+    <div class="exp-left">
+      <img id="exp-thumb" src="" alt="">
+      <div class="exp-info">
+        <div id="exp-title">—</div>
+        <div id="exp-artist">—</div>
+      </div>
+
+      <!-- VIDEO TOGGLE -->
+      <div class="exp-video-row">
+        <button class="btn-toggle-video" id="btn-toggle-video" onclick="toggleVideoExp()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Ver Videoclipe
+        </button>
+      </div>
+      <div id="exp-video-wrap">
+        <iframe id="exp-video-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+
+      <div class="exp-prog">
+        <span class="time-label" id="exp-cur">0:00</span>
+        <div class="prog-wrap" onclick="seekBar(event,this)">
+          <div class="prog-fill" id="exp-fill"></div>
+        </div>
+        <span class="time-label" id="exp-dur">0:00</span>
+      </div>
+
+      <div class="exp-ctrl">
+        <button class="exp-btn-ctrl" onclick="prevTrack()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+        </button>
+        <button class="exp-btn-play" onclick="togglePlay()">
+          <svg id="exp-play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="exp-btn-ctrl" onclick="nextTrack()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zM19 4h2v16h-2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT: LYRICS -->
+    <div class="exp-right">
+      <div class="lyrics-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+        Letra Completa
+      </div>
+      <div id="lyric-box"></div>
+    </div>
+  </div>
+</div>
+
+<!-- AUDIO via YouTube embed (hidden) -->
+<div id="yt-audio-wrap">
+  <iframe id="yt-audio" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+</div>
+
+<script>
+// ─── DATABASE ─────────────────────────────────────────────────────────────────
+const db = {
+artistas: [
+
+{id:'m4rkim', name:'M4rkim', img:'https://img.youtube.com/vi/q49uYhB-1aI/mqdefault.jpg',
+ tags:['Jujutsu Kaisen','Flow Rápido'],
+ tracks:[
+  {title:'Rap do Sukuna: Ryomen',yt:'q49uYhB-1aI',thumb:'https://img.youtube.com/vi/q49uYhB-1aI/mqdefault.jpg',dur:232,
+   lyrics:`Olhe bem pro meu rosto e sinta o desespero de um Rei
+Eu voltei da morte e tudo o que restou eu quebrei
+Pirralho maldito, achou que podia conter a maldição
+Eu domino sua mente, estraçalho sua alma e tomo esse corpo na minha mão
+
+Santuário Malevolente se expande no campo
+Corto tudo o que vejo, em segundos eu sangro
+Cada guerreiro que tenta bater de frente comigo no fim vira pó
+Eu sou a calamidade viva, a própria morte, impiedoso e só
+
+De quatro braços e duas faces, o pesadelo renasce
+Não há feiticeiro no mundo que passe
+Pelo poder absoluto da era de ouro que eu mesmo criei
+Ajoelhe-se diante do trono de ossos do único Rei
+
+Dez Sombras não me seguram, Expansão não me para
+Eu sou o Rei dos Malditos, a chama que nunca se apaga
+Megumi foi minha porta de entrada pro mundo de novo
+E agora eu danço no campo de batalha como um lobo
+
+Técnica de Demolição desfaz tudo na frente do meu punho sagrado
+Corpo de Sukuna rasgando o espaço com um corte afiado
+Vinte dedos espalhados no mundo mas minha alma é una
+Tremo o chão de Tóquio com um sorriso, eu sou Ryomen Sukuna`},
+
+  {title:'Rap do Yuta Okkotsu: Prodígio',yt:'3wGvYV5Z-yU',thumb:'https://img.youtube.com/vi/3wGvYV5Z-yU/mqdefault.jpg',dur:215,
+   lyrics:`Eu não queria o mal, mas a minha maldição me escolheu
+Rika, por favor, destrua quem nos corrompeu
+Feiticeiro de classe especial, herdeiro do clã mais temido
+Eu guardo a cópia de jutsus antigos em cada combate vivido
+
+Vem, Rainha das Maldições, mostre o que sabe fazer
+Cinco minutos são mais que o bastante pra te ver ceder
+Eu quebro as regras do mundo Jujutsu pra proteger quem eu amo
+A pura energia reversa domina o campo
+
+De volta do exterior mais forte e mais focado
+Meu amor pela Rika foi transformado em poder afiado
+Escola de Jujutsu Tech foi meu lar e minha prisão
+Mas hoje eu luto de frente com a própria destruição`},
+
+  {title:'Rap do Itadori: Punhos de Ferro',yt:'vxE1nBUP0G4',thumb:'https://img.youtube.com/vi/vxE1nBUP0G4/mqdefault.jpg',dur:198,
+   lyrics:`Eu prometi ao meu avô que eu veria muitas mortes
+E que ninguém sofreria, eu abri todas as portes
+Engoli o dedo de Sukuna sem pensar nas consequências
+Agora carrego um demônio e todas as suas vivências
+
+Divergência Divergência, os golpes em ritmo frenético
+O corpo que para de morte é quase poético
+Osaka, Tóquio, Sendai, eu fui em busca dos dedos
+Fui traído, fui morto, mas voltei sem segredos
+
+Black Flash ilumina o momento de impacto
+Meu coração bate forte em cada combate com trato
+Nobara, Megumi, meu bando que luta comigo
+Eu não sou Sukuna, sou Yuji e sou seu inimigo`}
+]},
+
+{id:'mhrap', name:'Mhrap', img:'https://img.youtube.com/vi/75b_wH5G83E/mqdefault.jpg',
+ tags:['Naruto','Trap Anime'],
+ tracks:[
+  {title:'Trap do Madara: Deus do Combate',yt:'75b_wH5G83E',thumb:'https://img.youtube.com/vi/75b_wH5G83E/mqdefault.jpg',dur:285,
+   lyrics:`Vocês querem dançar contra o Deus do Combate
+Olha pro céu, o meteoro te abate
+Uchiha Lendário, manto vermelho sangue
+Bato de frente sozinho contra toda a sua gangue
+
+Eu planejei o Tsukuyomi Infinito pra trazer a paz real
+Esse mundo de guerras e mortes é o verdadeiro mal
+Sinta a pressão do meu Susanoo perfeito esmagando a aliança
+Eu sou Madara Uchiha, não há segundo que avança
+
+Estilo Fogo, chamas destrutivas cobrem o campo
+Da floresta às muralhas da vila eu derramo
+Hashirama é o único digno de lutar comigo
+Mas mesmo ele vai cair se eu ativar meu perigo
+
+O plano do Olho da Lua está pronto, a ilusão vai reinar
+O mundo perfeito que eu mesmo criei ninguém vai parar
+Renascido de Edo Tensei mais forte do que antes
+Eu sou a lenda viva entre todos os gigantes`},
+
+  {title:'Trap do Obito: Máscara da Dor',yt:'uC3_zI_nZlI',thumb:'https://img.youtube.com/vi/uC3_zI_nZlI/mqdefault.jpg',dur:245,
+   lyrics:`Atrás dessa máscara esconde o garoto que morreu na guerra
+O mundo perfeito que eu tanto sonhei virou inferno na Terra
+Kamui ativo, intangível no espaço, ninguém me acerta mais
+Eu esqueci meu nome por um objetivo que traz a real paz
+
+Olhando pro corpo da Rin sem vida eu despertei o horror
+O Sharingan que chorava sangue agora é mestre da dor
+Não sou ninguém, sou apenas a sombra que guia o plano final
+A Akatsuki trabalha pra mim no caminho celestial
+
+Tobi o palhaço, a máscara cai e revela Uchiha Obito
+O garoto que queria ser Hokage agora é um mito
+Meu Rinnegan de Nagato controla os Caminhos da Dor
+Eu construí a Akatsuki com sangue, suor e rancor`},
+
+  {title:'Rap do Pain: Filosofia da Dor',yt:'rKp2jCQiNf8',thumb:'https://img.youtube.com/vi/rKp2jCQiNf8/mqdefault.jpg',dur:260,
+   lyrics:`Acredite em mim, acredite em Pain
+Destruir Konoha foi meu refrão
+Cresci na guerra, perdi tudo que amei
+E da dor que senti um deus eu criei
+
+Seis corpos, seis caminhos, um único ser
+O Rinnegan enxerga além do que ver
+A verdadeira paz vem do medo e da dor
+Nagato Uzumaki é o único senhor
+
+Shinra Tensei destrói uma nação inteira
+Chibaku Tensei cria lua de pedra rasteira
+Naruto me derrotou mas eu entendi
+A esperança que Jiraiya me ensinou eu senti`}
+]},
+
+{id:'7minutoz', name:'7 Minutoz', img:'https://img.youtube.com/vi/O-P8Z95Eozc/mqdefault.jpg',
+ tags:['Nerdcore Clássico','Naruto','DBZ'],
+ tracks:[
+  {title:'Rap da Akatsuki (Completo)',yt:'O-P8Z95Eozc',thumb:'https://img.youtube.com/vi/O-P8Z95Eozc/mqdefault.jpg',dur:545,
+   lyrics:`Pain! Na dor o mundo vai se curvar e entender a real paz
+Konan! O papel em asas de anjo te rasga e não volta atrás
+Itachi! A ilusão do Sharingan te prende num ciclo infernal
+Akatsuki inteira chegou coletando as Bijuus pro plano final
+
+Da névoa oculta vem Kisame, a Bijuu sem cauda com a Samehada
+Sasori e Deidara transformam a morte em arte refinada e bombardeada
+Hidan e Kakuzu, a dupla imortal que busca o sangue e o dinheiro
+Tobi esconde o segredo do mundo atrás do seu rosto mascarado traiçoeiro
+
+Nuvens vermelhas no manto preto traz o terror
+Nós somos os renegados do mundo, juízes do medo e da dor
+Nenhum ninja de vila nenhuma consegue parar nossa organização
+A Akatsuki domina a história trazendo a completa destruição
+
+Zetsu nas sombras observando cada movimento do campo
+Kisame sorri com a Samehada enquanto o chakra ela absorve nesse trampo
+Itachi com Kisame formam a dupla mais temida de todas as vilas
+Duas personagens lendárias com histórias que nenhum ninja revira`},
+
+  {title:'Rap do Naruto: O Nono',yt:'KYniUCGPGLs',thumb:'https://img.youtube.com/vi/KYniUCGPGLs/mqdefault.jpg',dur:430,
+   lyrics:`Acredite! Esse é meu caminho, minha força e minha garra
+Eu nunca desisti mesmo quando o mundo todo garra
+Filho do Quarto Hokage e da Kunoichi mais forte
+Nasci na noite do desastre, mas escolhi minha sorte
+
+Kyuubi selado dentro de mim, o Demônio de Nove Caudas
+Eu aprendi a coexistir com ele entre as bravatas
+Modo Sábio, Modo Kyuubi, Modo Seis Caminhos ativo
+Uzumaki Naruto, o Sétimo Hokage, ainda tô vivo
+
+Konoha me chamava de monstro quando eu era criança
+Mas Iruka-sensei me mostrou que havia esperança
+Sasuke, meu rival e meu irmão de toda uma vida
+Eu trouxe você de volta mesmo com a alma ferida
+
+Rasengan no peito do inimigo explodindo com força
+Odama Rasengan destrói qualquer coisa que força
+Eu fiz amigos no mundo todo com minha filosofia
+Mudar o coração do inimigo é minha maior vitória`},
+
+  {title:'Rap do Goku: O Sayajin',yt:'dLPPSMG1YGg',thumb:'https://img.youtube.com/vi/dLPPSMG1YGg/mqdefault.jpg',dur:380,
+   lyrics:`Enviado como bebê prum planeta desconhecido
+Criado pelo vovô Gohan com amor e muito brio
+Sayajin de Classe Baixa que superou o próprio destino
+Kakaroto virou Goku e reescreveu o domínio
+
+Super Sayajin! O cabelo dourado e os olhos que brilham
+As lágrimas de raiva ao ver o Krillin que as chamas trilham
+Kamehameha carregado com toda a minha energia
+Eu luto pela Terra com garra, amor e alegria
+
+Vegeta foi meu rival e depois se tornou aliado
+Cell e Freeza tombaram diante do meu punhado
+Ultra Instinto, o movimento que os Anjos buscaram
+Meu corpo age sozinho onde outros fracassaram
+
+Treinamento na gravidade, comida sem limite
+Meu apetite de batalha nada proíbe ou impede
+Filho do Bardock, pai do Gohan e do Goten
+Sou o Sayajin mais forte, não tem quem me deten`}
+]},
+
+{id:'eodan', name: 'Eodan', img:'https://img.youtube.com/vi/EbyO283iO4M/mqdefault.jpg',
+ tags:['One Piece','Lírico'],
+ tracks:[
+  {title:'Rap do Sanji: Asas do Rei',yt:'U30GpramUe0',thumb:'https://img.youtube.com/vi/EbyO283iO4M/mqdefault.jpg',dur:220,
+   lyrics:`Perna Negra na pista, o cozinheiro do futuro Rei do Mar
+Tudo o que passei na Germa 66 eu superei pra me formar
+Minhas mãos servem pra cozinhar, pro meu bando alimentar
+Mas se tocar nos meus nakama minhas pernas vão incinerar
+
+Diable Jambe acende o fogo que queima mais que o inferno
+Ifrit Jambe desperta o poder do meu corpo modificado eterno
+Eu sou a asa esquerda que sustenta o sonho do meu Capitão
+O chute mais rápido, quebra defesas, destrói sua tripulação
+
+Todo Marine a bordo do navio vai encontrar meu Collier Strike
+Meu cigarro acende no vento mesmo na tormenta do Spike
+Dona do meu coração em cada ilha que eu chego sorrio
+Mas meu coração pertence à cozinha e ao bando que eu confio
+
+Germa 66 me deu um corpo que a ciência criou
+Mas a alma que tenho foi a cozinha que me formou
+Judge pode me chamar de fracasso da sua linhagem
+Eu prefiro ser humano do que servir à sua imagem`},
+
+  {title:'Rap do Zoro: Rei dos Espadachins',yt:'h5bPWoGnEcU',thumb:'https://img.youtube.com/vi/h5bPWoGnEcU/mqdefault.jpg',dur:240,
+   lyrics:`Três espadas na boca e nas mãos em posição de corte
+Eu prometi a Kuina que seria o mais forte
+Nada que exista no mundo vai me impedir de chegar ao topo
+Roronoa Zoro não se perde nem sem bússola no escopo
+
+Oni Giri, Toro Nagashi, Três Mil Mundos em espiral
+O Haki do Rei dos Espadachins faz o inimigo cair no final
+Em Thriller Bark eu suportei a dor de toda a tripulação
+Luffy não perdeu nada naquele dia, foi minha determinação
+
+Wano me deu o aço negro, o Enma me escolheu como dono
+O estilo Três Espadas Santoryuu reina em cada trono
+Mihawk olha pra mim e sabe que o dia vai chegar
+Quando eu cruzar as lâminas com ele e o superar
+
+Nada aconteceu, essas são as palavras que eu digo ao Luffy
+Carregando a dor alheia com um sorriso que é buffy
+A maior espada do mundo vai ser minha promessa cumprida
+Honra de espadachim é uma só, paga com a própria vida`}
+]},
+
+{id:'chrono', name:'Chrono', img:'https://img.youtube.com/vi/v5Oq2w-H7V8/mqdefault.jpg',
+ tags:['Jujutsu Kaisen','Cyberpunk'],
+ tracks:[
+  {title:'Rap do Gojo Satoru: O Infinito',yt:'v5Oq2w-H7V8',thumb:'https://img.youtube.com/vi/v5Oq2w-H7V8/mqdefault.jpg',dur:190,
+   lyrics:`No céu e na terra, eu sou o único honrado desse mundo real
+O Mugen protege meu corpo de toda a energia do mal
+Olhos azuis que enxergam a alma, a técnica do infinito
+Eu quebro as leis da física pura com um poder erudito
+
+Vazio Roxo destrói a matéria, apagando o que toca no chão
+Vermelho e Azul se misturam na palma da minha própria mão
+Expansão de Domínio: Vazio Imensurável paralisa sua mente
+Eu sou o topo do mundo Jujutsu, soberano e onisciente
+
+Olhos de Seis Olhos veem o fluxo de energia em tudo
+Meu rosto coberto pra não sobrecarregar o mundo bruto
+Gojo Satoru nasceu uma vez em cem anos nesse plano
+Técnica Herdada dos Gojo, o clã mais poderoso e soberano
+
+Toji Fushiguro foi o único que quase me derrubou
+Mas a ativação do Vazio Reverso me reergueu e me salvou
+Eu fui selado no Caixão das Estrelas por traiçoeiros
+Mas o dia que eu sair vai apagar todos os guerreiros`}
+]},
+
+{id:'henrique', name:'Henrique Mendonça', img:'https://img.youtube.com/vi/mI688-wK9h4/mqdefault.jpg',
+ tags:['Dragon Ball','Voz Épica'],
+ tracks:[
+  {title:'Rap do Gohan: O Despertar da Fúria',yt:'mI688-wK9h4',thumb:'https://img.youtube.com/vi/mI688-wK9h4/mqdefault.jpg',dur:250,
+   lyrics:`Eu tentei evitar a batalha, eu disse que não queria lutar
+Mas ver o Android morrer na minha frente fez minha mente quebrar
+Uma força antiga e oculta explode de dentro do meu coração
+A raiva domina meu corpo, a terra sente a oscilação
+
+Super Sayajin 2 ativado, a aura elétrica começa a brilhar
+Cell, olhe bem pro meu punho, seu fim acabou de chegar
+O poder de um jovem prodígio supera o guerreiro mais forte do mal
+O Kamehameha Pai e Filho encerra o combate final
+
+Meu pai acreditou em mim quando eu mesmo duvidei
+Na hora mais sombria a raiva de um filho foi o que eu levei
+Goku me passou o bastão no Torneio do Poder
+Mystic Gohan, Ultimate Gohan, o poder que deve ser
+
+Estudei, me casei com Videl, tive a Pan com amor
+Mas quando o mundo precisa de mim ressurge a ardor
+O guerreiro adormecido que o Cell Games despertou
+Filho de Goku e Chi-Chi, o mais forte que o destino criou`},
+
+  {title:'Rap do Vegeta: Orgulho Sayajin',yt:'G-1RMsoG0Os',thumb:'https://img.youtube.com/vi/G-1RMsoG0Os/mqdefault.jpg',dur:270,
+   lyrics:`Eu sou o Príncipe de Todos os Sayajins, não me confunda com um soldado
+Meu orgulho é minha armadura, meu trono é meu legado
+Kakaroto me supera e essa raiva me consome
+Mas eu nunca vou desistir enquanto ainda houver nome
+
+Big Bang Attack explode tudo no campo de batalha
+Galick Cannon enfrenta o Kamehameha sem falha
+Eu treinei no Gravity Room até o limite e além
+Vegeta não dobra o joelho pra ninguém
+
+Frieza destruiu meu planeta e massacrou meu povo
+Eu servi ao algoz por anos mas encontrei o rumo novo
+Bulma e o Trunks me ancoraram nesse mundo que habito
+Mas o orgulho Sayajin ainda grita em meu espírito
+
+Ultra Ego desperto quando a batalha me machuca mais
+A dor se torna poder nas minhas mãos implacáveis demais
+Eu não preciso do Ultra Instinto do Kakaroto
+Tenho meu próprio caminho de guerreiro devoto`}
+]},
+
+{id:'igris', name:'Igris Beats', img:'https://img.youtube.com/vi/bYw9T7w9U6I/mqdefault.jpg',
+ tags:['Solo Leveling','Orquestral'],
+ tracks:[
+  {title:'Rap do Sung Jin-Woo: Monarca das Sombras',yt:'bYw9T7w9U6I',thumb:'https://img.youtube.com/vi/bYw9T7w9U6I/mqdefault.jpg',dur:210,
+   lyrics:`Do caçador mais fraco do mundo ao topo do trono sombrio
+Eu encarei a morte de frente no templo e meu peito ficou frio
+O sistema me deu uma escolha: evoluir ou morrer
+Agora os portões que se abrem na terra vão me ver
+
+Erga-se! É a palavra de ordem que faz o exército surgir
+As sombras dos monstros caídos agora só sabem me servir
+Igris e Beru na vanguarda do caos, cortando quem tenta barrar
+O Monarca das Sombras domina o planeta, ninguém vai me alcançar
+
+Nível E que se torna o caçador mais forte da humanidade
+O Sistema Dungeon me escolheu com absoluta vontade
+Jogadores de S-Rank tremem quando eu apareço no campo
+Minha faca dança no escuro enquanto sombras eu campo
+
+A Guerra dos Monarcas começou e eu sou o ponto central
+Destruí o Monarca das Bestas num duelo magistral
+Minha mãe acordou do coma quando eu finalmente criei
+O exército de sombras que ao mundo inteiro protegerei`}
+]},
+
+{id:'rafao', name:'Rafão Music', img:'https://img.youtube.com/vi/Z8wW9j6i4vA/mqdefault.jpg',
+ tags:['Demon Slayer','Heavy'],
+ tracks:[
+  {title:'Rap do Yoriichi: O Primeiro Sol',yt:'Z8wW9j6i4vA',thumb:'https://img.youtube.com/vi/Z8wW9j6i4vA/mqdefault.jpg',dur:270,
+   lyrics:`Eu nasci com a marca divina, os deuses me deram o dom
+O som da minha espada cortando os demônios tem o pior tom
+Respiração do Sol primordial, as doze formas que queimam a noite
+Muzan tremeu de terror ao sentir o poder do meu aço feito açoite
+
+Nenhum Oni consegue ficar de pé onde a luz solar decidir tocar
+Eu falhei em proteger quem eu amava, mas sigo o mal a caçar
+A lâmina vermelha incandescente corta pescoços na velocidade da luz
+Eu sou o caçador lendário, o homem que a esperança conduz
+
+Forma Um: Dança Dançante, flores de sol pelo ar
+Forma Três: Chuva de Flores, lâminas a florescar
+Forma Sete: A Chama Faiscante, o golpe mais veloz que existe
+Forma Doze: o ápice da técnica que só o escolhido resiste
+
+Meu irmão gêmeo Yoriichi era a luz que eu nunca tive
+Mas aprendi de memória cada forma que ele me abriu
+Hoje Tanjiro carrega a técnica através das gerações
+O Sol de Hinokami continua ardendo nas criações`},
+
+  {title:'Rap do Tanjiro: Cheiro de Determinação',yt:'k7t8O3LSlTc',thumb:'https://img.youtube.com/vi/k7t8O3LSlTc/mqdefault.jpg',dur:235,
+   lyrics:`Eu cheirava a gentileza, diz Muzan com raiva e surpresa
+Meu pai dançava o Kagura do fogo com toda a destreza
+Minha família foi massacrada numa noite de inverno e gelo
+Nezuko sobreviveu como demônio, mas nunca perdeu o belo
+
+Respiração da Água, os dez movimentos fluem no meu corpo
+Wisteria me guia na montanha, no caminho mais torto
+Hashira foram minha inspiração no treinamento final
+Eu vou curar minha irmã e destruir o Muzan afinal
+
+Dança do Deus do Fogo, memória ancestral do meu pai
+A técnica que ressurge quando tudo mais falha e cai
+Hinokami Kagura, o Sol que queima mais forte que tudo
+O cabelo avermelhado e a testa marcada, o guerreiro sisudo
+
+Zenitsu, Inosuke, meus companheiros de batalha e dor
+Juntos chegamos ao Castelo do Infinito com todo o ardor
+Muzan, o pai de todos os demônios, vai enfim cair
+Eu cumpri minha promessa, Nezuko vai poder sorrir`}
+]},
+
+{id:'blxck', name:'Blxck', img:'https://img.youtube.com/vi/p8b6zV3VnK0/mqdefault.jpg',
+ tags:['One Punch Man','Punchline'],
+ tracks:[
+  {title:'Rap do Garou: O Caçador de Heróis',yt:'p8b6zV3VnK0',thumb:'https://img.youtube.com/vi/p8b6zV3VnK0/mqdefault.jpg',dur:215,
+   lyrics:`A associação de heróis vai cair perante o Monstro Humano
+Eu fui rejeitado e moldado pelo ódio de um falso plano
+Punho de Água Corrente, Cortador de Ferro esmaga a justiça fajuta
+Eu evoluo a cada pancada, eu cresço no meio da luta
+
+Não ligo pra rankings ou capas, eu quebro os pilares da sociedade
+Se o mundo quer um vilão de verdade, eu serei a calamidade
+Sinta o peso do meu soco cruzado quebrando seus ossos ao meio
+Garou, o pesadelo absoluto que chegou sem nenhum receio
+
+Bang me ensinou o estilo mas eu o superei no processo
+Cada batalha que perco me molda pra um maior sucesso
+Cosmic Garou com o poder do Deus dos Monstros imbuído
+Eu soqueei de volta o próprio Deus e ele foi destruído
+
+Saitama, o único ser que quebrou meu limite final
+No tapa que recebi entendi o que é o bem e o mal
+Eu queria ser o vilão que os heróis precisavam temer
+Mas no fundo só queria que um herói me pudesse ver`}
+]},
+
+{id:'anirap', name:'Anirap', img:'https://img.youtube.com/vi/bM79D9D5lco/mqdefault.jpg',
+ tags:['One Piece','Trap'],
+ tracks:[
+  {title:'Rap do Luffy - Gear 5: O Libertador',yt:'bM79D9D5lco',thumb:'https://img.youtube.com/vi/bM79D9D5lco/mqdefault.jpg',dur:195,
+   lyrics:`Os tambores da libertação ecoam direto de Wano pro mundo
+O guerreiro caiu e o Deus do Sol desperta em um segundo
+Meu corpo é borracha livre, eu luto sorrindo e mudo a realidade
+Transformo o chão em borracha, pulo nas nuvens com total liberdade
+
+Kaido, olhe pro meu poder, o Gear Fifth é o topo da minha evolução
+Eu luto no ritmo do meu coração fazendo a maior diversão
+O guerreiro de fios brancos que traz a alegria pra quem tá no chão
+Eu vou ser o Rei dos Piratas assinando nossa libertação
+
+Gear Second acelera o sangue e o vapor sobe do meu corpo
+Gear Third infla meu braço num gigante porco
+Gear Fourth o Boundman envolto em Haki preto e apertado
+Kong Gun dispara com potência de um ser abençoado
+
+Shanks me deu o chapéu de palha com um propósito claro
+Roger foi o Rei dos Piratas mas o título não é tão raro
+O One Piece existe e eu vou achar no fim do Grand Line
+Monkey D. Luffy, o homem que vai ser Rei até o fim da line`},
+
+  {title:'Rap do Ace: Punhos de Fogo',yt:'M0IfEtTc_Nk',thumb:'https://img.youtube.com/vi/M0IfEtTc_Nk/mqdefault.jpg',dur:218,
+   lyrics:`Eu nasci sem querer esse nome que meu pai carregou
+Mas a vida que vivi com o Sabo e o Luffy me formou
+Portgas D. Ace, Punhos de Fogo no alto mar
+Filho do Rei dos Piratas que o mundo quis apagar
+
+Fruta do Mera Mera me deu o poder das chamas absolutas
+Eu surfo no fogo e transformo batalhas em lutas brutas
+Marineford foi minha última batalha, meu último adeus
+Mas morri protegendo meu irmão, e isso foi meu fardo e meu troféu
+
+Barba Branca era meu pai de coração e de alma
+Eu me ajoelhei diante dele pedindo pra fazer parte da calma
+A bandeira do pêssego no chapéu, meu marco de liberdade
+Segundo Divisão de comandante com total capacidade
+
+Luffy, não chore, você vai ser o Rei dos Piratas
+Minha vida valeu cada uma das lutas e gatas
+O fogo que acendi dentro de você nunca vai apagar
+Eu sou Ace e meu legado vai sempre continuar`}
+]}
+
+]};
+
+// ─── BUILD TOP LIST ───────────────────────────────────────────────────────────
+db.top = [];
+db.artistas.forEach(a => {
+  a.tracks.forEach(t => {
+    db.top.push({...t, artist: a.name, context: a.name});
+  });
+});
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let queue=[], qIdx=-1, playing=false, muted=false;
+let progTimer=null, trackStart=0, elapsed=0, trackDur=180;
+let recents=[], currentSec='artistas';
+let videoExpanded=false;
+
+// ─── AUDIO ENGINE ─────────────────────────────────────────────────────────────
+function buildAudioUrl(ytId, startAt=0) {
+  let u = `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=0&rel=0&showinfo=0&iv_load_policy=3&mute=${muted?1:0}`;
+  if(startAt>0) u += `&start=${Math.floor(startAt)}`;
+  return u;
+}
+
+function buildVideoUrl(ytId, startAt=0) {
+  let u = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&mute=${muted?1:0}`;
+  if(startAt>0) u += `&start=${Math.floor(startAt)}`;
+  return u;
+}
+
+function loadTrack(q, i, startAt=0) {
+  queue=q; qIdx=i;
+  const t=queue[qIdx];
+  if(!t) return;
+  elapsed=startAt;
+  trackDur=t.dur||200;
+
+  // Load audio iframe
+  document.getElementById('yt-audio').src=buildAudioUrl(t.yt, startAt);
+
+  // If video is showing in expanded, update it too
+  if(videoExpanded) {
+    document.getElementById('exp-video-iframe').src=buildVideoUrl(t.yt, startAt);
+  }
+
+  updateUI(t);
+  playing=true;
+  updatePlayIcons(true);
+  if(startAt===0) addRecent(t);
+  startTimer();
+  refreshHL();
+}
+
+function updateUI(t) {
+  const name = t.artist||t.context||'Artista';
+  // Mini player
+  document.getElementById('p-thumb').src=t.thumb;
+  document.getElementById('p-title').textContent=t.title;
+  document.getElementById('p-artist').textContent=name;
+  document.getElementById('player-bar').classList.remove('idle');
+  // Sidebar
+  document.getElementById('sb-thumb').src=t.thumb;
+  document.getElementById('sb-title').textContent=t.title;
+  document.getElementById('sb-artist').textContent=name;
+  document.getElementById('sidebar-now').style.display='block';
+  // Expanded
+  document.getElementById('exp-thumb').src=t.thumb;
+  document.getElementById('exp-title').textContent=t.title;
+  document.getElementById('exp-artist').textContent=name;
+  // Lyrics
+  const lb=document.getElementById('lyric-box');
+  const raw=t.lyrics||'Letra não disponível.';
+  lb.innerHTML=raw.split('\n\n').map(p=>
+    `<div class="lyric-para">${p.split('\n').map(l=>
+      `<div class="lyric-line">${l||'&nbsp;'}</div>`).join('')}</div>`
+  ).join('');
+}
+
+function updatePlayIcons(isPlay) {
+  playing=isPlay;
+  // Mini
+  const pi=document.getElementById('p-play-icon');
+  pi.innerHTML=isPlay?'<path d="M6 19h4V5H6zm8-14v14h4V5z"/>':'<path d="M8 5v14l11-7z"/>';
+  // Expanded
+  const ei=document.getElementById('exp-play-icon');
+  ei.innerHTML=isPlay?'<path d="M6 19h4V5H6zm8-14v14h4V5z"/>':'<path d="M8 5v14l11-7z"/>';
+}
+
+function togglePlay() {
+  if(qIdx<0) return;
+  if(playing) {
+    elapsed+=(Date.now()-trackStart)/1000;
+    document.getElementById('yt-audio').src='about:blank';
+    if(videoExpanded) document.getElementById('exp-video-iframe').src='about:blank';
+    playing=false;
+    updatePlayIcons(false);
+    stopTimer();
+  } else {
+    loadTrack(queue,qIdx,elapsed);
+  }
+}
+
+function nextTrack() { if(queue.length) loadTrack(queue,(qIdx+1)%queue.length); }
+function prevTrack() { if(queue.length) loadTrack(queue,(qIdx-1+queue.length)%queue.length); }
+
+function toggleMute() {
+  muted=!muted;
+  const icon=document.getElementById('p-vol-icon');
+  if(muted) {
+    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+  } else {
+    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>';
+  }
+  if(qIdx<0) return;
+  const cur=(Date.now()-trackStart)/1000+elapsed;
+  document.getElementById('yt-audio').src=buildAudioUrl(queue[qIdx].yt, cur);
+}
+
+function setVol(v) {}
+
+function seekBar(e, el) {
+  if(qIdx<0) return;
+  const pct=e.offsetX/el.offsetWidth;
+  loadTrack(queue,qIdx,pct*trackDur);
+}
+
+// VIDEO CONTROLS
+function toggleVideoBar() { openExpanded(); toggleVideoExp(); }
+
+function toggleVideoExp() {
+  videoExpanded=!videoExpanded;
+  const btn=document.getElementById('btn-toggle-video');
+  const wrap=document.getElementById('exp-video-wrap');
+  const iframe=document.getElementById('exp-video-iframe');
+  if(videoExpanded) {
+    btn.classList.add('active');
+    wrap.classList.add('show');
+    if(qIdx>=0) {
+      const cur=(Date.now()-trackStart)/1000+elapsed;
+      iframe.src=buildVideoUrl(queue[qIdx].yt, cur);
+    }
+  } else {
+    btn.classList.remove('active');
+    wrap.classList.remove('show');
+    iframe.src='about:blank';
+  }
+}
+
+// ─── TIMER ────────────────────────────────────────────────────────────────────
+function startTimer() {
+  stopTimer();
+  trackStart=Date.now()-(elapsed*1000);
+  progTimer=setInterval(()=>{
+    const e=(Date.now()-trackStart)/1000;
+    const pct=Math.min((e/trackDur)*100,100);
+    ['p-fill','exp-fill'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.width=pct+'%'; });
+    ['p-cur','exp-cur'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=fmt(e); });
+    ['p-dur','exp-dur'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=fmt(trackDur); });
+    if(pct>=100){ stopTimer(); elapsed=0; nextTrack(); }
+  },400);
+}
+function stopTimer(){ if(progTimer){clearInterval(progTimer);progTimer=null;} }
+function fmt(s){ s=Math.max(0,Math.floor(s)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
+
+// ─── EXPANDED PLAYER ─────────────────────────────────────────────────────────
+function openExpanded() {
+  if(qIdx<0) return;
+  document.getElementById('expanded').classList.add('open');
+}
+function closeExpanded() {
+  document.getElementById('expanded').classList.remove('open');
+  if(videoExpanded) toggleVideoExp();
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function navTo(sec, navBtn, tabBtn) {
+  currentSec=sec;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));
+  if(navBtn) navBtn.classList.add('active');
+  if(tabBtn) tabBtn.classList.add('active');
+  // sync both
+  const nb=document.querySelector(`.nav-btn[data-s="${sec}"]`);
+  if(nb) nb.classList.add('active');
+  renderSection(sec);
+  document.getElementById('search-input').value='';
+}
+function goHome() { navTo('artistas', document.querySelector('[data-s="artistas"]')); }
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderSection(sec) {
+  const c=document.getElementById('content');
+  if(sec==='top') { c.innerHTML=renderTopHTML(); return; }
+  if(sec==='recentes') { c.innerHTML=renderRecentHTML(); return; }
+  const items=db.artistas;
+  c.innerHTML=`
+    <div class="sec-head fade-in">
+      <div class="sec-bar"></div>
+      <h2 class="sec-title">Artistas BR</h2>
+      <span class="sec-count">${items.length}</span>
+    </div>
+    <div class="cards-grid fade-in">
+      ${items.map(a=>`
+        <div class="card" onclick="renderDetail('${a.id}')">
+          <img class="card-img" src="${a.img}" alt="${a.name}" loading="lazy">
+          <div class="card-name">${a.name}</div>
+          <div class="card-sub">${a.tags.slice(0,2).join(' · ')}</div>
+          <div class="card-overlay">
+            <div class="play-circle">
+              <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function renderDetail(id) {
+  const art=db.artistas.find(a=>a.id===id);
+  if(!art) return;
+  const tracks=art.tracks.map(t=>({...t,artist:art.name,context:art.name}));
+  const c=document.getElementById('content');
+  c.innerHTML=`
+    <button onclick="renderSection('artistas')" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:99px;cursor:pointer;font-size:.75rem;font-weight:700;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:24px;transition:color .15s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Voltar
+    </button>
+    <div class="art-header fade-in">
+      <img src="${art.img}" alt="${art.name}">
+      <div class="art-header-info">
+        <div class="art-header-badge">Artista Oficial</div>
+        <div class="art-header-name">${art.name}</div>
+        <div class="art-header-meta">${tracks.length} música${tracks.length!==1?'s':''} · ${art.tags.join(' · ')}</div>
+      </div>
+    </div>
+    <button onclick='loadTrack(${JSON.stringify(tracks)},0)' style="background:var(--accent);color:#fff;border:none;padding:10px 22px;border-radius:99px;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;transition:background .15s" onmouseover="this.style.background='var(--accent2)'" onmouseout="this.style.background='var(--accent)'">▶ Tocar Tudo</button>
+    <div class="track-list fade-in">
+      ${tracks.map((t,i)=>`
+        <div class="track-item" id="ti-${t.yt}" onclick='loadTrack(${JSON.stringify(tracks)},${i})'>
+          <div class="track-num">${i+1}</div>
+          <div class="track-eq">
+            <div class="eq-bar" style="height:8px"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar" style="height:6px"></div>
+          </div>
+          <img class="track-thumb" src="${t.thumb}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="track-title">${t.title}</div>
+            <div class="track-sub">${art.name}</div>
+          </div>
+          <span class="track-dur">${fmt(t.dur)}</span>
+        </div>
+      `).join('')}
+    </div>`;
+  refreshHL();
+}
+
+function renderTopHTML() {
+  return `
+    <div class="sec-head fade-in"><div class="sec-bar"></div><h2 class="sec-title">Mais Ouvidas</h2><span class="sec-count">${db.top.length}</span></div>
+    <div class="track-list fade-in">
+      ${db.top.map((t,i)=>`
+        <div class="track-item" onclick='loadTrack(${JSON.stringify(db.top)},${i})'>
+          <div class="track-num" style="${i<3?'color:var(--accent);font-size:.85rem':''}">${i+1}</div>
+          <img class="track-thumb" src="${t.thumb}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="track-title">${t.title}</div>
+            <div class="track-sub">${t.context}</div>
+          </div>
+          <span class="track-dur">${fmt(t.dur)}</span>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function renderRecentHTML() {
+  if(!recents.length) return `<div class="empty-state">Nenhuma música ouvida ainda.<br>Explore os artistas e comece a ouvir!</div>`;
+  return `
+    <div class="sec-head fade-in"><div class="sec-bar"></div><h2 class="sec-title">Recentes</h2></div>
+    <div class="track-list fade-in">
+      ${recents.map((t,i)=>`
+        <div class="track-item" onclick='loadTrack(${JSON.stringify(recents)},${i})'>
+          <img class="track-thumb" src="${t.thumb}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="track-title">${t.title}</div>
+            <div class="track-sub">${t.artist||t.context}</div>
+          </div>
+          <span class="track-dur">${fmt(t.dur)}</span>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function addRecent(t) {
+  recents=recents.filter(r=>r.yt!==t.yt);
+  recents.unshift(t);
+  if(recents.length>30) recents.pop();
+}
+
+function refreshHL() {
+  if(qIdx<0||!queue[qIdx]) return;
+  const cur=queue[qIdx];
+  document.querySelectorAll('.track-item').forEach(el=>{
+    const title=el.querySelector('.track-title')?.textContent;
+    el.classList.toggle('active', title===cur.title);
+  });
+}
+
+// ─── SEARCH ───────────────────────────────────────────────────────────────────
+function handleSearch(q) {
+  q=q.trim().toLowerCase();
+  if(!q) { renderSection(currentSec); return; }
+  const results=[];
+  db.artistas.forEach(a=>{
+    a.tracks.forEach(t=>{
+      if(t.title.toLowerCase().includes(q)||a.name.toLowerCase().includes(q))
+        results.push({...t,artist:a.name,context:a.name});
+    });
+  });
+  const c=document.getElementById('content');
+  if(!results.length) {
+    c.innerHTML=`<div class="empty-state">Nenhum resultado para "<strong>${q}</strong>"</div>`;
+    return;
+  }
+  c.innerHTML=`
+    <div class="sec-head fade-in"><div class="sec-bar"></div><h2 class="sec-title">Resultados</h2><span class="sec-count">${results.length}</span></div>
+    <div class="track-list fade-in">
+      ${results.map((t,i)=>`
+        <div class="track-item" onclick='loadTrack(${JSON.stringify(results)},${i})'>
+          <img class="track-thumb" src="${t.thumb}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="track-title">${t.title}</div>
+            <div class="track-sub">${t.artist}</div>
+          </div>
+          <span class="track-dur">${fmt(t.dur)}</span>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+// ─── KEYBOARD SHORTCUTS ───────────────────────────────────────────────────────
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.code==='Space') { e.preventDefault(); togglePlay(); }
+  if(e.code==='ArrowRight') nextTrack();
+  if(e.code==='ArrowLeft') prevTrack();
+  if(e.code==='Escape') closeExpanded();
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.onload=()=>renderSection('artistas');
+</script>
+</body>
+</html>
